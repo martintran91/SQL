@@ -1,0 +1,56 @@
+-- Create a grocery store database
+
+CREATE TABLE Store (id INTEGER PRIMARY KEY, item TEXT, section TEXT, price INTEGER, popularity INTEGER);
+
+INSERT INTO store VALUES (1, "Honey Crisp Apple", "Produce", 1.25, 55);
+INSERT INTO store VALUES (2, "500ct Qtips", "Hygiene", 3.99, 35);
+INSERT INTO store VALUES (3, "Granny Smith Apple", "Produce", 0.75, 65);
+INSERT INTO store VALUES (4, "Asparagus", "Produce, 1.79, 25);
+INSERT INTO store VALUES (5, "Potato", "Produce", 5.99, 65);
+INSERT INTO store VALUES (6, "Melatonin", "Health", 12.89, 40);
+INSERT INTO store VALUES (7, "On-the-vine Tomato", "Produce", 1.69, 45);
+INSERT INTO store VALUES (8, "Roma Tomato", "Produce", 0.33, 75);
+INSERT INTO store VALUES (9, "Shampoo", "Hygiene", 4.99, 70);
+INSERT INTO store VALUES (10, "French Fries", "Frozen", 2.99, 100);
+INSERT INTO store VALUES (11, "Pepsi", "Beverage", 4.99, 50);
+INSERT INTO store VALUES (12, "Avocado", "Produce", 1.25, 50);
+INSERT INTO store VALUES (13, "Onion", "Produce", 0.25, 65);
+INSERT INTO store VALUES (14, "White Muschroom", "Produce", 2.39, 35);
+INSERT INTO store VALUES (15, "Red Bell Pepper", "Produce", 0.39, 70);
+INSERT INTO store VALUES (16, "Womens Deodorant", "Hygiene", 5.99, 60);
+INSERT INTO store VALUES (17, "Water", "Beverage", 3.99, 40);
+INSERT INTO store VALUES (18, "Conditioner", "Hygiene", 4.99, 60);
+INSERT INTO store VALUES (19, "Green Bell Pepper", "Produce", 0.39, 65);
+INSERT INTO store VALUES (20, "Banana", "Produce", 1.69, 90);
+INSERT INTO store VALUES (21, "Iceberg Lettuce", "Produce", 1.99, 45);
+INSERT INTO store VALUES (22, "Mens Deodorant", "Hygiene", 5.99, 60);
+INSERT INTO store VALUES (23, "Chicken Nuggets", "Meat", 10.89, 100);
+INSERT INTO store VALUES (24, "Ice Cream", "Frozen", 4.59, 110);
+INSERT INTO store VALUES (25, "Hamburger Patties", "Meat", 10.87, 60);
+INSERT INTO store VALUES (26, "Vitamin D", "Health", 6.89, 20);
+INSERT INTO store VALUES (27, "Gatorade", "Beverage", 7.99, 35);
+
+
+-- Display the database ordered by price. 
+SELECT * FROM store
+ORDER BY price desc; 
+
+-- Display the database ordered by section.
+SELECT * FROM store
+ORDER BY section; 
+
+-- What is the avg price of items in the produce section? 
+SELECT AVG(price) "avg produce item price"
+FROM store
+where section = 'produce'; 
+
+-- What are the 10 most popular items? 
+SELECT item, price, popularity
+FROM store
+order by popularity desc
+limit 10; 
+
+-- How many items are in the beverage section?
+SELECT Count(beverage)
+FROM store;
+
