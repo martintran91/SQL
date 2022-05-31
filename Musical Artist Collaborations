@@ -1,0 +1,65 @@
+/* Create table about the people and what they do here */
+
+/* famous_people
+1, Alicia Keys, 41, NY
+2, Lady Gaga, 36, NY
+3, Jay-Z, 52, NY
+4, Beyonce, 40, TX
+5, Usher, 43, TX
+6, Rihanna, 34, Barbados
+7, Kelly Rowland, 41, GA
+8, Nelly, 47, TX
+*/
+
+/* songs
+1, 1, Empire State of Mind, 3
+2, 2, Telephone, 4
+3, 3, Empire State of Mind, 1
+4, 4, Telephone, 2
+5, 5, My Boo, 1
+6, 6, We Found Love, 0
+7, 7, Dilemma, 8
+8, 8, Ride Wit Me, 0
+*/
+
+CREATE TABLE famous_people (id INTEGER PRIMARY KEY, name TEXT, age INTEGER, birth_place TEXT);
+
+INSERT INTO famous_people VALUES (1, "Alicia Keys", 41, "NY");
+INSERT INTO famous_people VALUES (2, "Lady Gaga", 36, "NY");
+INSERT INTO famous_people VALUES (3, "Jay-Z", 52, "NY");
+INSERT INTO famous_people VALUES (4, "Beyonce", 40, "TX");
+INSERT INTO famous_people VALUES (5, "Usher", 43, "TX");
+INSERT INTO famous_people VALUES (6, "Rihanna", 34, "Barbados");
+INSERT INTO famous_people VALUES (7, "Kelly Rowland", 41, "GA");
+INSERT INTO famous_people VALUES (8, "Nelly", 47, "TX");
+
+
+CREATE TABLE songs (id INTEGER PRIMARY KEY, artist INTEGER, song TEXT, feature INTEGER);
+
+INSERT INTO songs VALUES (1, 1, "Empire State of Mind", 3);
+INSERT INTO songs VALUES (2, 2, "Telephone", 4);
+INSERT INTO songs VALUES (3, 3, "Empire State of Mind", 1);
+INSERT INTO songs VALUES (4, 4, "Telephone", 2);
+INSERT INTO songs VALUES (5, 5, "My Boo", 1);
+INSERT INTO songs VALUES (6, 6, "We Found Love", 0);
+INSERT INTO songs VALUES (7, 7, "Dilemma", 8);
+INSERT INTO songs VALUES (8, 8, "Ride Wit Me", 0);
+
+
+SELECT * FROM famous_people;
+
+SELECT * FROM songs;
+
+/*What song has each artist worked on?*/
+
+SELECT famous_people.name, songs.song FROM famous_people
+    JOIN songs
+    ON famous_people.ID = songs.id;
+
+/*Which artists worked together on a song? NULL = artist not listed*/
+
+SELECT a.name, b.name FROM songs
+    LEFT OUTER JOIN famous_people a
+    ON a.id = songs.artist
+    LEFT OUTER JOIN famous_people b
+    ON b.id = songs.feature;
