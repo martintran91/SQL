@@ -5,7 +5,7 @@ CREATE TABLE Store (id INTEGER PRIMARY KEY, item TEXT, section TEXT, price INTEG
 INSERT INTO store VALUES (1, "Honey Crisp Apple", "Produce", 1.25, 55);
 INSERT INTO store VALUES (2, "500ct Qtips", "Hygiene", 3.99, 35);
 INSERT INTO store VALUES (3, "Granny Smith Apple", "Produce", 0.75, 65);
-INSERT INTO store VALUES (4, "Asparagus", "Produce, 1.79, 25);
+INSERT INTO store VALUES (4, "Asparagus", "Produce", 1.79, 25);
 INSERT INTO store VALUES (5, "Potato", "Produce", 5.99, 65);
 INSERT INTO store VALUES (6, "Melatonin", "Health", 12.89, 40);
 INSERT INTO store VALUES (7, "On-the-vine Tomato", "Produce", 1.69, 45);
