@@ -1,5 +1,6 @@
 # For this project, I used kaggle to download data that consisted of a curated list of most awaited books of 2022 from goodreads.
-# Then I created a table to insert the data into.
+# I used MS Excel to clean the data to prepare it for querying.
+# Then I created a table into which I insert the data.
 # Finally, I performed analytics on the data using SQL. 
 
 #Creating the table:
