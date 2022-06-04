@@ -1,0 +1,149 @@
+#The following data was downloaded from a BreakIntoTech DataAnalytics course.
+#In the following data exploration, we can look at performance of the employees. 
+#In particular, we can observe how the support of each SSA contributed to sales.
+#This data can be considered in conjunction with company/store goals (revenue) to determine effectiveness of the general manager and SSA.
+#The analysis can be used by the GM to determine action plans for SSA. 
+
+#Which Sales Support Agent (SSA) is supporting the largest number of Sales?
+SELECT e.FirstName || ' ' || e.LastName AS SalesAgent, Round(Sum(i.Total), 2) AS SalesTotal
+FROM employees e
+JOIN customers c
+ON e.EmployeeId = c.SupportRepId
+JOIN invoices i
+ON c.CustomerId = i.CustomerId
+GROUP BY SalesAgent;
+
+#By year?
+SELECT e.FirstName || ' ' || e.LastName AS SalesAgent, Round(Sum(i.Total), 2) AS SalesTotal, strftime('%Y', i.InvoiceDate) AS Year
+FROM employees e
+JOIN customers c
+ON e.EmployeeId = c.SupportRepId
+JOIN invoices i
+ON c.CustomerId = i.CustomerId
+GROUP BY Year, SalesAgent
+ORDER BY Year, SalesTotal DESC;
+
+#What is the average total sales per invoice for each SSA?
+SELECT e.FirstName || ' ' || e.LastName AS SalesAgent, ROUND(AVG(i.Total), 2) AS AvgPerInvoice
+FROM employees e
+JOIN customers c
+ON e.EmployeeId = c.SupportRepId
+JOIN invoices i
+ON c.CustomerId = i.CustomerId
+GROUP BY SalesAgent;
+
+
+
+#The following are queries that can be used or modified for other insights.
+
+#1. Which customers are not from the US?
+SELECT FirstName || ' ' || LastName AS CustomerName, CustomerId, Country
+FROM customers
+WHERE Country <> 'USA';
+
+#2. Which customers are from Brazil?
+SELECT FirstName || ' ' || LastName AS CustomerName, CustomerId, Country
+FROM customers
+WHERE Country = 'Brazil';
+
+#3. Invoices of customers who are from Brazil.
+#Invoice ID, Date of the invoice, and billing country.
+SELECT c.FirstName || ' ' || c.LastName AS CustomerName, i.InvoiceId, i.InvoiceDate, i.BillingCountry
+FROM customers c
+LEFT JOIN invoices i
+ON c.CustomerId = i.InvoiceId
+WHERE i.BillingCountry = 'Brazil';
+
+#4. Employees who are Sales Agents.
+SELECT *
+FROM employees
+WHERE Title = 'Sales Support Agent';
+
+#5. Countries where there were sales.
+SELECT distinct BillingCountry
+FROM invoices;
+
+#6. Invoices associated with each sales agent.
+SELECT e.EmployeeId, e.FirstName || ' ' || e.LastName AS SalesAgent, i.InvoiceId
+FROM employees e
+JOIN customers c
+ON e.EmployeeId = c.SupportRepId
+JOIN Invoices i
+ON c.CustomerId = i.CustomerId
+GROUP BY SalesAgent, i.InvoiceId;
+
+#7. Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers.
+SELECT c.FirstName, c.LastName, c.Country, i.InvoiceId, i.Total,
+    e.EmployeeId, e.FirstName, e.LastName
+FROM employees e
+JOIN customers c
+ON e.EmployeeId = c.SupportRepId
+JOIN Invoices i
+ON c.CustomerId = i.CustomerId;
+
+#8. Amount of Invoices in 2009
+SELECT Count(*)
+FROM invoices
+WHERE InvoiceDate like '2009%';
+
+#9. Total sales for 2009
+SELECT Sum(Total)
+FROM invoices
+WHERE InvoiceDate like '2009%';
+
+#10. Track purchased on each invoice item line
+SELECT i.InvoiceLineId, t.Name AS Track
+FROM invoice_items i
+JOIN tracks t
+ON i.TrackId = t.TrackId;
+
+#11. Track purchased on each invoice item line with artist of track
+SELECT i.InvoiceLineId, t.Name AS Track, artists.Name AS Artist
+FROM invoice_items i
+JOIN tracks t
+ON i.TrackId = t.TrackId
+JOIN albums
+ON t.AlbumID = albums.AlbumId
+JOIN artists
+ON albums.ArtistId = artists.ArtistId;
+
+#12. Track, Artist name, Album name, Media type, and Genre.
+SELECT t.Name AS Track, artists.Name AS Artist,
+    albums.Title AS Album, m.Name AS MediaType, g.Name AS Genre
+FROM tracks t
+JOIN albums
+ON t.AlbumId = albums.AlbumId
+
+JOIN artists
+ON albums.ArtistId = artists.ArtistId
+
+JOIN media_types m
+ON t.MediaTypeID = m.MediaTypeId
+
+JOIN genres g
+ON t.GenreId = g.GenreId;
+
+#13. Total sales made by each sales agent.
+SELECT e.FirstName || ' ' || e.LastName AS SalesAgent, Round(Sum(i.Total), 2)
+FROM employees e
+JOIN customers c
+ON e.EmployeeId = c.SupportRepId
+JOIN invoices i
+ON c.CustomerId = i.CustomerId
+GROUP BY SalesAgent;
+
+#14. Sales agent who made the most in sales in 2009
+SELECT e.FirstName || ' ' || e.LastName AS SalesAgent, Round(Sum(i.Total), 2) AS TotalSales
+
+FROM employees e
+JOIN customers c
+ON e.EmployeeId = c.SupportRepId
+
+JOIN invoices i
+ON c.CustomerId = i.CustomerId
+
+WHERE InvoiceDate like '2009%'
+GROUP BY SalesAgent
+ORDER BY TotalSales DESC
+LIMIT 1;
+
