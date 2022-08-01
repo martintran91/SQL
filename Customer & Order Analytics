@@ -1,7 +1,7 @@
 #In this SQL, I'm using SQLiteStudio to query a database with multiple tables to quantify statistics about customer and order data.
 
 #1. How many orders were placed in January?
-SELECT * FROM BIT_DB.JanSales;
+SELECT COUNT(*) FROM BIT_DB.JanSales;
 
 #2. How many of those orders were for an iPhone?
 SELECT COUNT(*)
