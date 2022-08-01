@@ -1,9 +1,10 @@
 # For this project, I used kaggle to download data that consisted of a curated list of most awaited books of 2022 from goodreads.
 # I used MS Excel to clean the data to prepare it for querying.
-# Then I created a table into which I insert the data.
-# Finally, I performed analytics on the data using SQL. 
+# I then created a table into which I inserted the data.
+# Finally, I analyzed the data using SQL. 
 
-#Creating the table:
+# Creating the table:
+
 CREATE TABLE CantWaitBooks2022 (
 id INTEGER PRIMARY KEY NOT NULL,
 BookName VARCHAR NOT NULL,
@@ -14,28 +15,31 @@ Score INTEGER NOT NULL,
 TotalPeopleVoted INTEGER NOT NULL
 );
 
-#Then I inserted the Can't Wait Books of 2022 Data .csv into the table.
+# Then I inserted the Can't Wait Books of 2022 Data .csv into the table.
 
-#Next, I explored the data using the following SQL. 
+# Next, I explored the data using the following SQL. 
 
-#First, I determined the 50 most awaited books of 2022 according to goodreads ratings.
+# First, I determined the 50 most awaited books of 2022 according to goodreads ratings.
+
 SELECT BookName, AuthorName, AverageRating
 FROM CantWaitBooks2022
 ORDER BY AverageRating DESC
 LIMIT 50;
 
-#Next, I wanted to see which authors had the most books on the list.
-#I used this to determine not only the most awaiting books, 
-#but also authors that may be popular this year based off of the data.
+# Next, I wanted to see which authors had the most books on the list.
+# I used this to determine not only the most awaiting books, 
+# but also authors that may be popular this year based off of the data.
+
 SELECT AuthorName, COUNT(AuthorName) AS num_of_books
 FROM CantWaitBooks2022
 GROUP BY AuthorName
 HAVING num_of_books > 1
 ORDER BY num_of_books DESC;
 
-#Finally, I determined which books readers may have been most excited for based on
-#the number of ratings assuming that the number of ratings is the same as the number
-#of time the book was read.
+# Finally, I determined which books readers may have been most excited for based on
+# the number of ratings assuming that the number of ratings is the same as the number
+# of times the book was read.
+
 SELECT BookName, RatingCount
 FROM CantWaitBooks2022
 ORDER BY RatingCount DESC
