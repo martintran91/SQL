@@ -1,34 +1,59 @@
+/*
+Covid 19 Data Exploration with MySQL
+
+Skills used: Joins, CTE's, Temp Tables, Windows Functions, Aggregate Functions, Creating Views, Converting Data Types
+*/
+
+
 SELECT * FROM covid.coviddeaths
 WHERE continent != ''
 ORDER BY location, date;
 
--- SELECT * FROM covidvaccinations
--- ORDER BY location, date
+SELECT * FROM covidvaccinations
+ORDER BY location, date;
 
 -- Select data we are going to be using
 
-SELECT location, date, total_cases, new_cases, total_deaths, population
+SELECT location, 
+	date, 
+	total_cases, 
+	new_cases, 
+	total_deaths, 
+	population
 FROM covid.coviddeaths
 WHERE continent != ''
 ORDER BY location, date;
 
 -- Looking at Total Cases vs Total Deaths
 -- Shows likelihood of dying if you contract Covid in your country
-SELECT location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 as DeathPercentage
+
+SELECT location, 
+	date, 
+	total_cases, 
+	total_deaths, 
+	(total_deaths/total_cases)*100 as DeathPercentage
 FROM covid.coviddeaths
 WHERE location like '%states%'
 ORDER BY location, date;
 
 -- Looking at Total Cases vs Population
 -- Shows what percentage of population has contracted Covid
-SELECT location, date, total_cases, population, (total_cases/population)*100 as PercentPopulationInfected
+
+SELECT location, 
+	date, 
+	total_cases, 
+	population, 
+	(total_cases/population)*100 as PercentPopulationInfected
 FROM covid.coviddeaths
 WHERE location like '%states%'
 ORDER BY location, date;
 
 -- Looking at country with highest percent rate compared to population
 
-SELECT location, population, MAX(total_cases) as HighestInfectionCount, MAX((total_cases/population)*100) as PercentPopulationInfected
+SELECT location, 
+	population, 
+	MAX(total_cases) as HighestInfectionCount, 
+	MAX((total_cases/population)*100) as PercentPopulationInfected
 FROM covid.coviddeaths
 WHERE continent != ''
 -- WHERE location like '%states%'
@@ -37,22 +62,28 @@ ORDER BY PercentPopulationInfected DESC;
 
 -- Showing countries with the highest death count by population
 
-SELECT location, MAX(CAST(total_deaths AS UNSIGNED)) as TotalDeathCount
+SELECT location, 
+	MAX(CAST(total_deaths AS UNSIGNED)) as TotalDeathCount
 FROM covid.coviddeaths
 WHERE continent != ''
 GROUP BY location
 ORDER BY TotalDeathCount DESC;
+
+
+
 
 -- LET's BREAK THINGS DOWN BY CONTINENT
 
 
 -- Showing continents with the highest death count per population
 
-SELECT continent, MAX(CAST(total_deaths AS UNSIGNED)) as TotalDeathCount
+SELECT continent, 
+	MAX(CAST(total_deaths AS UNSIGNED)) as TotalDeathCount
 FROM covid.coviddeaths
 WHERE continent != ''
 GROUP BY continent
 ORDER BY TotalDeathCount DESC;
+
 
 
 
@@ -71,7 +102,11 @@ ORDER BY total_cases, total_deaths;
 
 -- Looking at Total Population vs Vacciantions
 
-SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
+SELECT dea.continent, 
+	dea.location, 
+	dea.date, 
+	dea.population, 
+	vac.new_vaccinations
 FROM coviddeaths dea
 JOIN covidvaccinations vac
 	ON dea.location = vac.location
@@ -84,10 +119,10 @@ ORDER BY dea.location, dea.date;
 
 SELECT dea.continent, 
 	dea.location, 
-    dea.date, 
-    dea.population, 
-    vac.new_vaccinations, 
-    SUM(CONVERT(vac.new_vaccinations, UNSIGNED)) OVER (PARTITION BY dea.Location ORDER BY dea.location, dea.date) AS RollingPeopleVaccinated
+	dea.date, 
+	dea.population, 
+	vac.new_vaccinations, 
+	SUM(CONVERT(vac.new_vaccinations, UNSIGNED)) OVER (PARTITION BY dea.Location ORDER BY dea.location, dea.date) AS RollingPeopleVaccinated
 --  , (RollingPeopleVaccinated/population)*100
 FROM covid.CovidDeaths dea
 JOIN covid.CovidVaccinations vac
@@ -104,10 +139,10 @@ AS
 (
 SELECT dea.continent, 
 	dea.location, 
-    dea.date, 
-    dea.population, 
-    vac.new_vaccinations, 
-    SUM(CONVERT(vac.new_vaccinations, UNSIGNED)) OVER (PARTITION BY dea.Location ORDER BY dea.location, dea.date) AS RollingPeopleVaccinated
+	dea.date, 
+	dea.population, 
+	vac.new_vaccinations, 
+	SUM(CONVERT(vac.new_vaccinations, UNSIGNED)) OVER (PARTITION BY dea.Location ORDER BY dea.location, dea.date) AS RollingPeopleVaccinated
 FROM covid.CovidDeaths dea
 JOIN covid.CovidVaccinations vac
 	ON dea.location = vac.location
@@ -135,10 +170,10 @@ RollingPeopleVaccinated bigint
 INSERT INTO PercentPopulationVaccinated
 SELECT dea.continent, 
 	dea.location, 
-    dea.date, 
-    dea.population, 
-    vac.new_vaccinations, 
-    SUM(CONVERT(vac.new_vaccinations, UNSIGNED)) OVER (PARTITION BY dea.Location ORDER BY dea.location, dea.date) AS RollingPeopleVaccinated
+	dea.date, 
+	dea.population, 
+	vac.new_vaccinations, 
+	SUM(CONVERT(vac.new_vaccinations, UNSIGNED)) OVER (PARTITION BY dea.Location ORDER BY dea.location, dea.date) AS RollingPeopleVaccinated
 FROM covid.CovidDeaths dea
 JOIN covid.CovidVaccinations vac
 	ON dea.location = vac.location
@@ -155,10 +190,10 @@ FROM PercentPopulationVaccinated;
 CREATE VIEW PercentPopulationVaccinated AS
 SELECT dea.continent, 
 	dea.location, 
-    dea.date, 
-    dea.population, 
-    vac.new_vaccinations, 
-    SUM(CONVERT(vac.new_vaccinations, UNSIGNED)) OVER (PARTITION BY dea.Location ORDER BY dea.location, dea.date) AS RollingPeopleVaccinated
+	dea.date, 
+	dea.population, 
+	vac.new_vaccinations, 
+	SUM(CONVERT(vac.new_vaccinations, UNSIGNED)) OVER (PARTITION BY dea.Location ORDER BY dea.location, dea.date) AS RollingPeopleVaccinated
 FROM covid.CovidDeaths dea
 JOIN covid.CovidVaccinations vac
 	ON dea.location = vac.location
