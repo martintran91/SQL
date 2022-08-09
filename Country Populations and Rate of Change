@@ -220,10 +220,21 @@ INSERT INTO countries(name,population,percent_one_year_change,population_change,
 
 SELECT * FROM countries;
 
+
+-- How does population correlate with % change?
+
 Select name, percent_of_world_pop, percent_one_year_change FROM countries;
 Select name, percent_of_world_pop/percent_one_year_change AS ratio FROM countries WHERE ratio < 1 AND ratio > 0 ORDER BY ratio;
 
+
+
+-- How does population affect fertility rate?
+
 Select percent_of_world_pop, fertility_rate FROM countries;
+
+
+
+-- Is median age lower in larger populations?
 
 SELECT percent_of_world_pop, median_age FROM countries;
 
@@ -247,9 +258,21 @@ SELECT name, percent_one_year_change, CASE
 FROM countries
 ORDER BY percent_one_year_change;
 
+
+
+-- Does fertility rate affect population change?
+
 SELECT name, percent_one_year_change, fertility_rate FROM countries ORDER BY fertility_rate;
 
+
+
+-- Is migration a larger factor in population change?
+
 SELECT name, percent_one_year_change, net_migrants FROM countries ORDER BY net_migrants;
+
+
+
+-- Does population density affect fertility rate or is affected by fertility rate?
 
 SELECT name, density_per_sq_km, median_age FROM countries ORDER BY density_per_sq_km;
 SELECT name, density_per_sq_km, fertility_rate FROM countries WHERE fertility_rate > 4 ORDER BY density_per_sq_km;
