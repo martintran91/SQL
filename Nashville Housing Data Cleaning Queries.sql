@@ -78,7 +78,7 @@ SELECT OwnerAddress
 FROM nashvillehousing;
 
 
-#Creating a functing to split address using delimiter (similar to PARSENAME function is MSSQL)
+#Creating a functing to split address using delimiter (similar to PARSENAME function in MSSQL)
 
 SET GLOBAL log_bin_trust_function_creators = 1;
 
@@ -158,17 +158,9 @@ SET SoldAsVacant =
 
 WITH RowNumCTE AS 
 (
-SELECT 
-	*,
-	ROW_NUMBER() OVER (
-    PARTITION BY ParcelID,
-					PropertyAddress,
-					SalePrice,
-                    SaleDate,
-                    LegalReference
-                    ORDER BY
-						UniqueID
-                        ) row_num
+SELECT *, 
+	ROW_NUMBER() OVER (PARTITION BY ParcelID, PropertyAddress,SalePrice,SaleDate, LegalReference
+		ORDER BY UniqueID) row_num
 FROM nashvillehousing
 ORDER BY ParcelID
 )
@@ -177,31 +169,13 @@ FROM RowNumCTE
 WHERE row_num > 1
 ORDER BY PropertyAddress;
 
-SELECT 
-	*,
-    ROW_NUMBER() OVER (
-    PARTITION BY ParcelID,
-					PropertyAddress,
-					SalePrice,
-                    SaleDate,
-                    LegalReference
-                    ORDER BY
-						UniqueID
-                        ) row_num
+SELECT *, ROW_NUMBER() OVER (PARTITION BY ParcelID, PropertyAddress, SalePrice, SaleDate, LegalReference
+	ORDER BY UniqueID) row_num
 FROM nashvillehousing;
 
 SELECT *
-FROM (SELECT 
-	*,
-    ROW_NUMBER() OVER (
-    PARTITION BY ParcelID,
-					PropertyAddress,
-					SalePrice,
-                    SaleDate,
-                    LegalReference
-                    ORDER BY
-						UniqueID
-                        ) row_num
+FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY ParcelID, PropertyAddress, SalePrice, SaleDate, LegalReference
+	ORDER BY UniqueID) row_num
 FROM nashvillehousing) AS t
 WHERE row_num > 1;
 
@@ -209,17 +183,7 @@ DELETE FROM nashvillehousing
 WHERE UniqueID IN
 (
 SELECT UniqueID
-FROM (SELECT 
-	*,
-    ROW_NUMBER() OVER (
-    PARTITION BY ParcelID,
-					PropertyAddress,
-					SalePrice,
-                    SaleDate,
-                    LegalReference
-                    ORDER BY
-						UniqueID
-                        ) row_num
+FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY ParcelID, PropertyAddress, SalePrice, SaleDate, LegalReference ORDER BY UniqueID) row_num
 FROM nashvillehousing) AS t
 WHERE row_num > 1
 );
